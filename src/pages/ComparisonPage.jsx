@@ -154,13 +154,22 @@ const ComparisonPage = ({ materials }) => {
 
   // Helper function to format property names
   const formatPropertyName = (prop) => {
-    return prop
+    // First handle special cases to prevent double replacements
+    if (prop === 'youngsModulus') return "Young's Modulus";
+    if (prop === 'flexuralMod') return "Flexural Modulus";
+    
+    // Then apply the general formatting rules for other properties
+    const formatted = prop
       .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .replace(/Mod$/, 'Modulus')
-      .replace(/Coef$/, 'Coefficient')
-      .replace(/Temp$/, 'Temperature')
-      .replace(/Cap$/, 'Capacity');
+      .replace(/^./, str => str.toUpperCase());
+    
+    // Replace common abbreviations
+    return formatted
+      .replace('Uts', 'UTS')
+      .replace('Coef', 'Coefficient')
+      .replace(' Mod', ' Modulus') // Add space before Mod to avoid partial word matches
+      .replace('Temp', 'Temperature')
+      .replace('Cap', 'Capacity');
   };
 
   // Helper function to highlight best values (simplified approach)
@@ -179,19 +188,24 @@ const ComparisonPage = ({ materials }) => {
       'density', 'waterAbsorption', 'frictionCoef'
     ];
     
+    // Make sure value is a string before using string methods
+    const valueStr = String(value);
+    
     // Skip coloring for properties with complex formats or where comparison doesn't make sense
-    if (!/^[\d.-]+/.test(value)) {
+    if (!/^[\d.-]+/.test(valueStr)) {
       return 'transparent';
     }
     
     const numericValues = materials
       .map(m => m.properties[property])
-      .filter(v => v && /^[\d.-]+/.test(v))
+      .filter(v => v !== undefined && v !== null) // Filter out undefined/null values
+      .map(v => String(v)) // Convert all values to strings
+      .filter(v => /^[\d.-]+/.test(v)) // Test if it contains numeric content
       .map(v => parseFloat(v.match(/^[\d.-]+/)[0]));
     
     if (numericValues.length < 2) return 'transparent';
     
-    const thisValue = parseFloat(value.match(/^[\d.-]+/)[0]);
+    const thisValue = parseFloat(valueStr.match(/^[\d.-]+/)[0]);
     const isMax = thisValue === Math.max(...numericValues);
     const isMin = thisValue === Math.min(...numericValues);
     
