@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getMaterialTypes } from '../data';
+import config from '../config';
 
 const AddMaterial = ({ materials }) => {
   const [formData, setFormData] = useState({
@@ -97,13 +98,13 @@ const AddMaterial = ({ materials }) => {
           After submitting, you can copy the code and contribute it via a GitHub pull request.
         </p>
         <a 
-          href="https://github.com/username/materials-database" 
-          className="text-accent hover:underline" 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          View GitHub Repository →
-        </a>
+  href={config.github.url} 
+  className="text-accent hover:underline" 
+  target="_blank" 
+  rel="noopener noreferrer"
+>
+  View GitHub Repository →
+</a>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">

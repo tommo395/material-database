@@ -6,6 +6,7 @@ import MaterialTypePage from "./pages/MaterialTypePage";
 import ComparisonPage from "./pages/ComparisonPage";
 import Info from "./pages/Info";
 import { loadMaterials } from "./data";
+import config from './config';
 
 function App() {
   const [materials, setMaterials] = useState([]);
@@ -88,14 +89,14 @@ function App() {
         <footer className="bg-primary text-white py-4 mt-auto">
           <div className="container mx-auto px-4 text-center">
             <p>
-              <a
-                href="https://github.com/username/materials-database"
-                className="text-light hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Contribute on GitHub
-              </a>
+            <a 
+        href={config.github.url} 
+        className="text-accent hover:underline"
+        target="_blank" 
+        rel="noopener noreferrer"
+      >
+        Contribute on GitHub
+      </a>
             </p>
           </div>
         </footer>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import config from '../config';
 
 const Info = () => {
   return (
@@ -79,9 +80,9 @@ const Info = () => {
         </ul>
         
         <p>
-          The source code is available on <a href="https://github.com/username/materials-database" className="text-accent hover:underline">GitHub </a> 
-        under an open-source license, allowing for community contributions and improvements.
-        </p>
+  The source code is available on <a href={config.github.url} className="text-accent hover:underline">GitHub </a> 
+  under an open-source license, allowing for community contributions and improvements.
+</p>
         
         <div className="mt-6 pt-4 border-t border-light-gray">
           <Link to="/" className="bg-secondary text-white py-2 px-4 rounded hover:bg-opacity-90 transition-colors inline-flex items-center">
