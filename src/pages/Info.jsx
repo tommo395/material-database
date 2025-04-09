@@ -80,8 +80,7 @@ const Info = () => {
         </ul>
         
         <p>
-  The source code is available on <a href={config.github.url} className="text-accent hover:underline">GitHub </a> 
-  under an open-source license, allowing for community contributions and improvements.
+  The source code is available on <a href={config.github.url} className="text-accent hover:underline">GitHub</a> under an open-source license, allowing for community contributions and improvements.
 </p>
         
         <div className="mt-6 pt-4 border-t border-light-gray">
