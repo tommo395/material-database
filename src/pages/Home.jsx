@@ -5,22 +5,37 @@ import MaterialCard from '../components/MaterialCard';
 
 const Home = ({ materials }) => {
   const [searchResults, setSearchResults] = useState(materials);
-  const [displayLimit, setDisplayLimit] = useState(8);
+  const [displayLimit, setDisplayLimit] = useState(24);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setDisplayLimit(mobile ? 24 : 32);
+    };
+    
     window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial values
+    
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    setSearchResults(materials);
+  }, [materials]);
+
   const handleSearch = (results) => {
     setSearchResults(results);
-    setDisplayLimit(8); // Reset display limit when searching
+    setDisplayLimit(isMobile ? 24 : 32); // Reset display limit when searching
   };
 
   const showMoreItems = () => {
-    setDisplayLimit(prev => prev + 8);
+    setDisplayLimit(prev => prev + (isMobile ? 24 : 32));
+  };
+  
+  const showLessItems = () => {
+    setDisplayLimit(isMobile ? 24 : 32);
   };
 
   return (
@@ -45,12 +60,21 @@ const Home = ({ materials }) => {
                 <MaterialCard key={material.id} material={material} />
               ))}
               
-              {isMobile && searchResults.length > displayLimit && (
+              {searchResults.length > displayLimit && (
                 <button 
                   onClick={showMoreItems}
                   className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors shadow-sm mt-2"
                 >
                   Show More ({searchResults.length - displayLimit} remaining)
+                </button>
+              )}
+              
+              {displayLimit > (isMobile ? 24 : 32) && searchResults.length > (isMobile ? 24 : 32) && (
+                <button 
+                  onClick={showLessItems}
+                  className="w-full py-3 bg-light-gray text-secondary rounded-lg hover:bg-opacity-90 transition-colors shadow-sm mt-2"
+                >
+                  Show Less
                 </button>
               )}
             </>

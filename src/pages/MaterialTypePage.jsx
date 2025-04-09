@@ -5,7 +5,7 @@ import MaterialCard from '../components/MaterialCard';
 const MaterialTypePage = ({ materials }) => {
   const { typeId } = useParams();
   const decodedType = decodeURIComponent(typeId);
-  const [displayLimit, setDisplayLimit] = useState(8);
+  const [displayLimit, setDisplayLimit] = useState(24);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   const materialsOfType = materials.filter(material => 
@@ -13,13 +13,24 @@ const MaterialTypePage = ({ materials }) => {
   );
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setDisplayLimit(mobile ? 24 : 32);
+    };
+    
     window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial values
+    
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const showMoreItems = () => {
-    setDisplayLimit(prev => prev + 8);
+    setDisplayLimit(prev => prev + (isMobile ? 24 : 32));
+  };
+  
+  const showLessItems = () => {
+    setDisplayLimit(isMobile ? 24 : 32);
   };
 
   return (
@@ -59,12 +70,21 @@ const MaterialTypePage = ({ materials }) => {
               <MaterialCard key={material.id} material={material} />
             ))}
             
-            {isMobile && materialsOfType.length > displayLimit && (
+            {materialsOfType.length > displayLimit && (
               <button 
                 onClick={showMoreItems}
                 className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors shadow-sm mt-2"
               >
                 Show More ({materialsOfType.length - displayLimit} remaining)
+              </button>
+            )}
+            
+            {displayLimit > (isMobile ? 24 : 32) && materialsOfType.length > (isMobile ? 24 : 32) && (
+              <button 
+                onClick={showLessItems}
+                className="w-full py-3 bg-light-gray text-secondary rounded-lg hover:bg-opacity-90 transition-colors shadow-sm mt-2"
+              >
+                Show Less
               </button>
             )}
           </>

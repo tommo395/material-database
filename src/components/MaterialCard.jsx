@@ -59,13 +59,20 @@ const MaterialCard = ({ material, onClick, isSelected }) => {
 
 // Helper function to format property labels
 const formatPropertyLabel = (key) => {
-  const formatted = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+  // First handle special cases to prevent double replacements
+  if (key === 'youngsModulus') return "Young's Modulus";
+  if (key === 'flexuralMod') return "Flexural Modulus";
+  
+  // Then apply the general formatting rules for other properties
+  const formatted = key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase());
   
   // Replace common abbreviations
   return formatted
     .replace('Uts', 'UTS')
     .replace('Coef', 'Coefficient')
-    .replace('Mod', 'Modulus')
+    .replace(' Mod', ' Modulus') // Add space before Mod to avoid partial word matches
     .replace('Temp', 'Temperature')
     .replace('Cap', 'Capacity');
 };

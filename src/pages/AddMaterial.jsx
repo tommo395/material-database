@@ -24,11 +24,13 @@ const AddMaterial = ({ materials }) => {
       meltingTemp: '',
       specificHeatCap: '',
       thermalConductivity: ''
-    }
+    },
+    customProperties: []
   });
 
   const [generatedCode, setGeneratedCode] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [newProperty, setNewProperty] = useState({ name: '', value: '' });
   
   const materialTypes = getMaterialTypes(materials);
 
@@ -60,16 +62,61 @@ const AddMaterial = ({ materials }) => {
     }));
   };
 
+  const handleNewPropertyChange = (e) => {
+    const { name, value } = e.target;
+    setNewProperty(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const addCustomProperty = () => {
+    if (newProperty.name.trim() && newProperty.value.trim()) {
+      // Convert property name to camelCase for consistency
+      const propertyName = newProperty.name
+        .trim()
+        .replace(/\s+(.)/g, (_, c) => c.toUpperCase())
+        .replace(/\s/g, '')
+        .replace(/^(.)/, (_, c) => c.toLowerCase());
+      
+      setFormData(prev => ({
+        ...prev,
+        customProperties: [
+          ...prev.customProperties,
+          { name: propertyName, label: newProperty.name.trim(), value: newProperty.value.trim() }
+        ]
+      }));
+      
+      // Reset new property fields
+      setNewProperty({ name: '', value: '' });
+    }
+  };
+
+  const removeCustomProperty = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      customProperties: prev.customProperties.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Create the new material object
+    // Merge standard and custom properties
+    const mergedProperties = { ...formData.properties };
+    
+    // Add custom properties
+    formData.customProperties.forEach(prop => {
+      mergedProperties[prop.name] = prop.value;
+    });
+    
+    // Create the new material object without id
     const newMaterial = {
       name: formData.name,
       shortName: formData.shortName,
       type: formData.type === 'custom' ? formData.customType : formData.type,
       designation: formData.designation,
-      properties: formData.properties
+      properties: mergedProperties
     };
     
     // Generate JSON code for GitHub contribution
@@ -98,13 +145,13 @@ const AddMaterial = ({ materials }) => {
           After submitting, you can copy the code and contribute it via a GitHub pull request.
         </p>
         <a 
-  href={config.github.url} 
-  className="text-accent hover:underline" 
-  target="_blank" 
-  rel="noopener noreferrer"
->
-  View GitHub Repository →
-</a>
+          href={config?.github?.url || "https://github.com/username/materials-database"} 
+          className="text-accent hover:underline" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          View GitHub Repository →
+        </a>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
@@ -185,7 +232,7 @@ const AddMaterial = ({ materials }) => {
           </div>
         </div>
         
-        <h3 className="text-lg font-semibold text-primary mb-4 border-b border-neutral pb-2">Material Properties</h3>
+        <h3 className="text-lg font-semibold text-primary mb-4 border-b border-neutral pb-2">Standard Properties</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <div>
@@ -370,6 +417,77 @@ const AddMaterial = ({ materials }) => {
             />
           </div>
         </div>
+
+        {/* Custom Properties Section */}
+        <div className="mb-6 border-t border-neutral pt-4">
+          <h3 className="text-lg font-semibold text-primary mb-4">Custom Properties</h3>
+          
+          {formData.customProperties.length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-md font-medium text-secondary mb-3">Added Custom Properties:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {formData.customProperties.map((prop, index) => (
+                  <div key={index} className="bg-neutral bg-opacity-10 p-3 rounded relative group">
+                    <button 
+                      type="button"
+                      onClick={() => removeCustomProperty(index)}
+                      className="absolute top-2 right-2 text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Remove property"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                    <p className="font-medium text-primary">{prop.label}</p>
+                    <p className="text-secondary mt-1">{prop.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div className="bg-light p-4 rounded-lg">
+            <h4 className="text-md font-medium text-secondary mb-3">Add New Custom Property:</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+              <div>
+                <label htmlFor="customPropertyName" className="block mb-1 font-medium text-secondary">Property Name</label>
+                <input
+                  type="text"
+                  id="customPropertyName"
+                  name="name"
+                  value={newProperty.name}
+                  onChange={handleNewPropertyChange}
+                  className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
+                  placeholder="e.g. Glass Transition Temperature"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="customPropertyValue" className="block mb-1 font-medium text-secondary">Property Value</label>
+                <input
+                  type="text"
+                  id="customPropertyValue"
+                  name="value"
+                  value={newProperty.value}
+                  onChange={handleNewPropertyChange}
+                  className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
+                  placeholder="e.g. 105°C"
+                />
+              </div>
+              
+              <div>
+                <button 
+                  type="button"
+                  onClick={addCustomProperty}
+                  disabled={!newProperty.name.trim() || !newProperty.value.trim()}
+                  className="w-full px-3 py-2 bg-secondary text-white rounded hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Add Property
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         
         <div className="flex justify-end">
           <button 
@@ -399,7 +517,7 @@ const AddMaterial = ({ materials }) => {
               ) : (
                 <>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l-3-3" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l-3-3" />
                   </svg>
                   Copy to Clipboard
                 </>
@@ -419,7 +537,7 @@ const AddMaterial = ({ materials }) => {
             <h4 className="text-md font-semibold text-primary mb-2">How to contribute:</h4>
             <ol className="list-decimal pl-6 space-y-2 text-secondary">
               <li>Copy the JSON code above</li>
-              <li>Go to the <a href="https://github.com/username/materials-database" className="text-accent hover:underline">GitHub repository</a></li>
+              <li>Go to the <a href={config?.github?.url || "https://github.com/username/materials-database"} className="text-accent hover:underline">GitHub repository</a></li>
               <li>Fork the repository if you haven't already</li>
               <li>Navigate to the <code className="bg-neutral px-1 py-0.5 rounded text-xs">data.json</code> file</li>
               <li>Click on Edit (pencil icon)</li>

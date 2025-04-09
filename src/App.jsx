@@ -91,7 +91,7 @@ function App() {
             <p>
             <a 
         href={config.github.url} 
-        className="text-accent hover:underline"
+        className="text-light hover:underline"
         target="_blank" 
         rel="noopener noreferrer"
       >
