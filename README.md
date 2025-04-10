@@ -1,4 +1,4 @@
-# Materials Database
+# EquaLab *Materials*
 
 A comprehensive reference application for materials science properties, designed to help scientists, engineers, and researchers access, compare, and contribute to a growing database of material properties.
 
@@ -22,7 +22,7 @@ Each material entry contains extensive physical, mechanical, electrical, and the
 - **Search Functionality**: Find materials by name or short code with fuzzy matching
 - **Material Comparison**: Compare up to three materials side-by-side with highlighted optimal properties
 - **Community Contributions**: Add new materials through GitHub pull requests
-- **Mobile-Responsive Design**: Optimized for both desktop and mobile devices
+- **Mobile-Responsive Design**: Optimised for both desktop and mobile devices
 
 ## 🚀 Getting Started
 
@@ -35,8 +35,8 @@ Each material entry contains extensive physical, mechanical, electrical, and the
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/materials-database.git
-   cd materials-database
+   git clone https://github.com/tommo395/material-database.git
+   cd material-database
    ```
 
 2. Install dependencies:
@@ -68,7 +68,7 @@ Please ensure all property values include appropriate units and are backed by re
 
 ## 🧠 Project Background
 
-The Materials Database was created based on an idea by Thomas Bell, an aspiring materials scientist. Thomas envisioned a comprehensive, accessible platform where researchers and students could easily access and compare material properties for both reference and research purposes. This vision has been realized as an open-source web application that can grow through community contributions, making it a valuable resource for the materials science field.
+The Materials Database was created based on an idea by Thomas Bell, an aspiring materials scientist. Thomas envisioned a comprehensive, accessible platform where researchers and students could easily access and compare material properties for both reference and research purposes. This vision has been realised as an open-source web application that can grow through community contributions, making it a valuable resource for the materials science field.
 
 ## 🛠️ Built With
 
