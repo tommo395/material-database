@@ -1546,18 +1546,7 @@
         "uts": "N/A",
         "frictionCoef": "N/A",
         "waterAbsorption": "Variable (hydrophilic/hydrophobic)",
-        "electricalResistance": "High",
-        "resistivity": "High",
-        "flexuralMod": "Very low",
-        "impactCharpy": "Very low",
-        "notchedImpactCharpy": "N/A",
-        "meltingTemp": "N/A (Decomposes)",
-        "specificHeatCap": "800 J/(kg·K)",
-        "thermalConductivity": "0.01-0.03 W/(m·K)",
-        "costPerKg": 300.0,
-        "recyclability": "No",
-        "biocompatible": "Conditional",
-        "application": "Insulation and lightweight structures"
+        "electricalResistance": "High"
       }
     }
   ]

@@ -23,7 +23,11 @@ const AddMaterial = ({ materials }) => {
       notchedImpactCharpy: '',
       meltingTemp: '',
       specificHeatCap: '',
-      thermalConductivity: ''
+      thermalConductivity: '',
+      costPerKg: '',
+      recyclability: '',
+      biocompatible: '',
+      application: ''
     },
     customProperties: []
   });
@@ -102,12 +106,17 @@ const AddMaterial = ({ materials }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Merge standard and custom properties
-    const mergedProperties = { ...formData.properties };
+    // Filter out empty properties
+    const filteredProperties = {};
+    Object.entries(formData.properties).forEach(([key, value]) => {
+      if (value.trim() !== '') {
+        filteredProperties[key] = value.trim();
+      }
+    });
     
     // Add custom properties
     formData.customProperties.forEach(prop => {
-      mergedProperties[prop.name] = prop.value;
+      filteredProperties[prop.name] = prop.value;
     });
     
     // Create the new material object without id
@@ -116,7 +125,7 @@ const AddMaterial = ({ materials }) => {
       shortName: formData.shortName,
       type: formData.type === 'custom' ? formData.customType : formData.type,
       designation: formData.designation,
-      properties: mergedProperties
+      properties: filteredProperties
     };
     
     // Generate JSON code for GitHub contribution
@@ -414,6 +423,58 @@ const AddMaterial = ({ materials }) => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
               placeholder="e.g. 0.48 W/(m·K)"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="costPerKg" className="block mb-1 font-medium text-secondary">Cost Per kg</label>
+            <input
+              type="text"
+              id="costPerKg"
+              name="properties.costPerKg"
+              value={formData.properties.costPerKg}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="e.g. 2.50 USD"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="recyclability" className="block mb-1 font-medium text-secondary">Recyclability</label>
+            <input
+              type="text"
+              id="recyclability"
+              name="properties.recyclability"
+              value={formData.properties.recyclability}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="e.g. Yes/No/Partial"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="biocompatible" className="block mb-1 font-medium text-secondary">Biocompatibility</label>
+            <input
+              type="text"
+              id="biocompatible"
+              name="properties.biocompatible"
+              value={formData.properties.biocompatible}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="e.g. Yes/No/Conditional"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="application" className="block mb-1 font-medium text-secondary">Common Applications</label>
+            <input
+              type="text"
+              id="application"
+              name="properties.application"
+              value={formData.properties.application}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="e.g. Automotive parts, Medical devices"
             />
           </div>
         </div>

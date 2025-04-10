@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MaterialCard from '../components/MaterialCard';
 
@@ -8,6 +8,7 @@ const ComparisonPage = ({ materials }) => {
   const [filteredMaterials, setFilteredMaterials] = useState(materials);
   const navigate = useNavigate();
   const location = useLocation();
+  const comparisonTableRef = useRef(null);
 
   useEffect(() => {
     // Parse URL parameters for pre-selected materials
@@ -63,6 +64,12 @@ const ComparisonPage = ({ materials }) => {
     setSelectedMaterials([]);
   };
 
+  const scrollToComparisonTable = () => {
+    if (selectedMaterials.length > 0 && comparisonTableRef.current) {
+      comparisonTableRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const renderComparisonTable = () => {
     if (selectedMaterials.length === 0) {
       return (
@@ -83,7 +90,7 @@ const ComparisonPage = ({ materials }) => {
     }, []);
     
     return (
-      <div className="bg-white rounded-lg shadow-md p-4 mt-6 overflow-x-auto">
+      <div ref={comparisonTableRef} className="bg-white rounded-lg shadow-md p-4 mt-6 overflow-x-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-primary">Comparison</h2>
           <button
@@ -129,7 +136,7 @@ const ComparisonPage = ({ materials }) => {
               ))}
             </tr>
             {allProperties.map(prop => (
-              <tr key={prop}>
+              <tr key={prop} className="even:bg-gray-50">
                 <td className="px-4 py-3 text-sm font-medium text-secondary">
                   {formatPropertyName(prop)}
                 </td>
@@ -157,6 +164,7 @@ const ComparisonPage = ({ materials }) => {
     // First handle special cases to prevent double replacements
     if (prop === 'youngsModulus') return "Young's Modulus";
     if (prop === 'flexuralMod') return "Flexural Modulus";
+    if (prop === 'costPerKg') return "Cost Per kg";
     
     // Then apply the general formatting rules for other properties
     const formatted = prop
@@ -185,7 +193,7 @@ const ComparisonPage = ({ materials }) => {
     
     // Properties where lower is better
     const lowerIsBetter = [
-      'density', 'waterAbsorption', 'frictionCoef'
+      'density', 'waterAbsorption', 'frictionCoef', 'costPerKg'
     ];
     
     // Make sure value is a string before using string methods
@@ -227,9 +235,23 @@ const ComparisonPage = ({ materials }) => {
       <h1 className="text-2xl font-bold text-primary mb-6">Compare Materials</h1>
       
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <p className="mb-4">
-          Select up to 3 materials to compare their properties side by side.
-        </p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+          <p className="mb-2 sm:mb-0">
+            Select up to 3 materials to compare their properties side by side.
+          </p>
+          
+          {selectedMaterials.length > 0 && (
+            <button
+              onClick={scrollToComparisonTable}
+              className="px-3 py-1 bg-accent text-white rounded hover:bg-opacity-90 transition-colors shadow-sm text-sm flex items-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+              Jump to Comparison
+            </button>
+          )}
+        </div>
         
         <div className="mt-4">
           <input
