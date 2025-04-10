@@ -6,7 +6,7 @@ import MaterialTypePage from "./pages/MaterialTypePage";
 import ComparisonPage from "./pages/ComparisonPage";
 import Info from "./pages/Info";
 import { loadMaterials } from "./data";
-import config from './config';
+import config from "./config";
 
 function App() {
   const [materials, setMaterials] = useState([]);
@@ -43,36 +43,44 @@ function App() {
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex justify-between w-full md:w-auto items-center">
-                <Link to="/" className="text-2xl font-bold" onClick={closeMobileMenu}>
-                  Materials Database
+                <Link
+                  to="/"
+                  className="text-2xl font-bold"
+                  onClick={closeMobileMenu}
+                >
+                  EquaLab Materials
                 </Link>
                 <div className="md:hidden">
-                  <button 
-                    className="focus:outline-none p-2" 
+                  <button
+                    className="focus:outline-none p-2"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     aria-label="Toggle menu"
                   >
                     <div className="w-6 h-5 relative">
-                      <span 
+                      <span
                         className={`absolute left-0 h-0.5 w-6 bg-white transform transition-transform duration-300 ease-in-out ${
-                          mobileMenuOpen ? 'top-2 rotate-45' : 'top-0'
+                          mobileMenuOpen ? "top-2 rotate-45" : "top-0"
                         }`}
                       ></span>
-                      <span 
+                      <span
                         className={`absolute left-0 h-0.5 w-6 bg-white top-2 transition-opacity duration-200 ease-in-out ${
-                          mobileMenuOpen ? 'opacity-0' : 'opacity-100'
+                          mobileMenuOpen ? "opacity-0" : "opacity-100"
                         }`}
                       ></span>
-                      <span 
+                      <span
                         className={`absolute left-0 h-0.5 w-6 bg-white transform transition-transform duration-300 ease-in-out ${
-                          mobileMenuOpen ? 'top-2 -rotate-45' : 'top-4'
+                          mobileMenuOpen ? "top-2 -rotate-45" : "top-4"
                         }`}
                       ></span>
                     </div>
                   </button>
                 </div>
               </div>
-              <nav className={`${mobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto transition-all duration-300 mt-4 md:mt-0`}>
+              <nav
+                className={`${
+                  mobileMenuOpen ? "flex" : "hidden"
+                } md:flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto transition-all duration-300 mt-4 md:mt-0`}
+              >
                 <Link
                   to="/"
                   className="hover:text-accent transition-colors py-1 px-2 rounded hover:bg-primary-dark"
@@ -126,10 +134,10 @@ function App() {
         <footer className="bg-primary text-white py-4 mt-auto">
           <div className="container mx-auto px-4 text-center">
             <p>
-              <a 
-                href={config.github.url} 
+              <a
+                href={config.github.url}
                 className="text-light hover:underline"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 Contribute on GitHub
