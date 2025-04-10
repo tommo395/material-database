@@ -4,7 +4,7 @@ A comprehensive reference application for materials science properties, designed
 
 ## 🌟 Project Overview
 
-The Materials Database provides a user-friendly interface to explore and compare the properties of various materials, including:
+EquaLab *Materials* provides a user-friendly interface to explore and compare the properties of various materials, including:
 
 - Metals
 - Polymers
