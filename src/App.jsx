@@ -48,7 +48,7 @@ function App() {
                   className="text-2xl font-bold"
                   onClick={closeMobileMenu}
                 >
-                  EquaLab Materials
+                  EquaLab <i className="text-2xl"> Materials</i>
                 </Link>
                 <div className="md:hidden">
                   <button

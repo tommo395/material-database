@@ -547,12 +547,12 @@
       }
     },
     {
-      "name": "Acetal (POM)",
+      "name": "Polyoxymethylene",
       "shortName": "POM",
       "type": "Polymer",
-      "designation": "Polyoxymethylene",
+      "designation": "Acetal",
       "properties": {
-        "hardness": "D83 Shore",
+        "hardness": "83 Shore D",
         "density": "1.41 g/cm³",
         "youngsModulus": "2.8-3.1 GPa",
         "uts": "65-75 MPa",
@@ -573,12 +573,12 @@
       }
     },
     {
-      "name": "ABS Plastic",
+      "name": "Acrylonitrile Butadiene Styrene",
       "shortName": "ABS",
       "type": "Polymer",
-      "designation": "Acrylonitrile Butadiene Styrene",
+      "designation": "Thermoplastic blend",
       "properties": {
-        "hardness": "D80 Shore",
+        "hardness": "80 Shore D",
         "density": "1.04 g/cm³",
         "youngsModulus": "2.0-2.5 GPa",
         "uts": "40-50 MPa",
