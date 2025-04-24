@@ -1,3 +1,4 @@
+// App.jsx (modified to include logo)
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
@@ -45,9 +46,14 @@ function App() {
               <div className="flex justify-between w-full md:w-auto items-center">
                 <Link
                   to="/"
-                  className="text-2xl font-bold"
+                  className="text-2xl font-bold flex items-center"
                   onClick={closeMobileMenu}
                 >
+                  <div className="w-8 h-8 mr-2 bg-accent flex items-center justify-center rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
                   EquaLab <i className="text-2xl"> Materials</i>
                 </Link>
                 <div className="md:hidden">

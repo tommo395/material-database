@@ -1,3 +1,4 @@
+// MaterialCard.jsx (modified with full-height accent bar)
 import React, { useState, useRef } from 'react';
 
 const MaterialCard = ({ material, onClick, isSelected }) => {
@@ -43,11 +44,14 @@ const MaterialCard = ({ material, onClick, isSelected }) => {
         bg-white rounded-lg shadow-md transition-all duration-300 overflow-hidden 
         ${expanded ? 'shadow-lg' : 'hover:shadow-lg'} 
         ${isSelected ? 'ring-2 ring-accent' : ''}
-        animate-fade-in
+        animate-fade-in relative
       `}
     >
+      {/* Vertical accent line that spans full height when expanded */}
+      <div className={`absolute left-0 top-0 bottom-0 w-1 bg-accent`}></div>
+      
       <div 
-        className="flex justify-between items-center p-4 border-l-4 border-accent cursor-pointer"
+        className="flex justify-between items-center p-4 pl-5 cursor-pointer"
         onClick={toggleExpand}
       >
         <h3 className="text-lg font-medium text-primary">{material.name}</h3>
@@ -58,7 +62,7 @@ const MaterialCard = ({ material, onClick, isSelected }) => {
       
       {expanded && (
         <div 
-          className="p-4 animate-slide-in border-t border-light" 
+          className="p-4 pl-5 animate-slide-in border-t border-light" 
           onClick={handleContentClick}
           ref={cardContentRef}
         >
